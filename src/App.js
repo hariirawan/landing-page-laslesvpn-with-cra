@@ -12,8 +12,19 @@ import Netflix from "./assets/sosmed/Netflix.png";
 import Spotify from "./assets/sosmed/Spotify.png";
 import Discord from "./assets/sosmed/Discord.png";
 import reddit from "./assets/sosmed/reddit.png";
+import ArrowLeft from "./assets/arrow-left.png";
+import ArrowRight from "./assets/arrow-right.png";
+import StartIcon from "./assets/start.png";
+
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import React, { useRef, useState } from "react";
 
 function App() {
+  const refSlick = useRef();
+  const [indexSlick, setIndexSlick] = useState(0);
+
   const menus = ["About", "Features", "Pricing", "Testimonials", "Help"];
   const section3 = [
     {
@@ -77,6 +88,25 @@ function App() {
   ];
 
   const sosmed = [Discord, reddit, Netflix, Spotify];
+
+  var settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true,
+    afterChange: (index) => setIndexSlick(index),
+  };
+
+  function next() {
+    refSlick?.current?.slickNext?.();
+  }
+  function previous() {
+    refSlick?.current?.slickPrev?.();
+  }
+
+  console.log("index ", indexSlick);
 
   return (
     <div className="bg-white">
@@ -198,12 +228,83 @@ function App() {
             <img src={Global} alt={"Global"} className="my-20" />
             <div className="flex flex-row justify-center">
               {sosmed.map((val, index) => (
-                <img key={index} src={val} className="w-44 h-14" />
+                <img key={index} src={val} className="w-44 h-14" alt={val} />
               ))}
+            </div>
+          </div>
+          <Slider {...settings} arrows={false} ref={refSlick}>
+            {Array.from(Array(8)).map((val, index) => {
+              return (
+                <div className={`${index + 1 === 1 ? "ml-32" : 0}`}>
+                  <CardReview key={val} isSelect={indexSlick === index} />
+                </div>
+              );
+            })}
+          </Slider>
+          <div className="container mx-auto max-w-5xl flex flex-row justify-between mt-10">
+            <div className="flex flex-row space-x-2 flex-1">
+              {Array.from(Array(8)).map((val, index) => {
+                return (
+                  <div
+                    className={`h-3 rounded-full ${
+                      index === indexSlick
+                        ? "w-10 bg-red-500 transition-all duration-300 ease-in-out"
+                        : "w-3 bg-gray-300 transition-all duration-200 ease-in-out "
+                    }`}
+                  />
+                );
+              })}
+            </div>
+            <div className="space-x-4 flex flex-row">
+              <button
+                onClick={() => previous()}
+                className="w-12 h-12 rounded-full text-center border border-red-500 flex items-center justify-center"
+              >
+                <img src={ArrowLeft} alt="arrow-left" className="w-6 h-6 " />
+              </button>
+              <button
+                onClick={() => next()}
+                className="w-12 h-12 rounded-full bg-red-500  flex items-center justify-center"
+              >
+                <img src={ArrowRight} alt="arrow-right" className="w-6 h-6" />
+              </button>
             </div>
           </div>
         </div>
       </main>
+    </div>
+  );
+}
+
+function CardReview({ isSelect }) {
+  return (
+    <div
+      className={`p-7 border ${
+        isSelect ? " border-red-500" : "border-gray-300"
+      } mr-7 w-96 rounded-lg`}
+    >
+      <div className="flex flex-row justify-between items-center">
+        <div className="flex flex-row space-x-5">
+          <img
+            src="https://images.pexels.com/photos/8573621/pexels-photo-8573621.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="profile"
+            className="w-12 h-12 rounded-full"
+          />
+          <div>
+            <div>Hari Irawan</div>
+            <div>Warsaw, Poland</div>
+          </div>
+        </div>
+        <div className="flex flex-row items-center space-x-2">
+          <div>4.5</div>
+          <img src={StartIcon} alt="start" className="w-3 h-3" />
+        </div>
+      </div>
+      <div className="mt-5">
+        “Wow... I am very happy to use this VPN, it turned out to be more than
+        my expectations and so far there have been no problems. LaslesVPN always
+        the best”.
+      </div>
     </div>
   );
 }
