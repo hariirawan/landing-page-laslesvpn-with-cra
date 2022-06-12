@@ -5,26 +5,23 @@ import IconUsers from "./assets/users.png";
 import IconServer from "./assets/server.png";
 import Ilustration2 from "./assets/Illustration_2.png";
 import Check from "./assets/Check.png";
-import IconFree from "./assets/Free.png";
-import CheckSucces from "./assets/check-success.png";
 import Global from "./assets/Huge_Global.png";
 import Netflix from "./assets/sosmed/Netflix.png";
 import Spotify from "./assets/sosmed/Spotify.png";
 import Discord from "./assets/sosmed/Discord.png";
 import reddit from "./assets/sosmed/reddit.png";
-import ArrowLeft from "./assets/arrow-left.png";
-import ArrowRight from "./assets/arrow-right.png";
-import StartIcon from "./assets/start.png";
+import Facebook from "./assets/sosmed/Facebook.png";
+import Instagram from "./assets/sosmed/Instagram.png";
+import Twitter from "./assets/sosmed/Twitter.png";
 
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React, { useRef, useState } from "react";
+import CardPlan from "./components/CardPlan";
+import Review from "./components/Review";
+import TitleDesc from "./components/TitleDesc";
+import SubscribeNow from "./components/SubscribeNow";
 
 function App() {
-  const refSlick = useRef();
-  const [indexSlick, setIndexSlick] = useState(0);
-
   const menus = ["About", "Features", "Pricing", "Testimonials", "Help"];
   const section3 = [
     {
@@ -89,25 +86,6 @@ function App() {
 
   const sosmed = [Discord, reddit, Netflix, Spotify];
 
-  var settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    variableWidth: true,
-    afterChange: (index) => setIndexSlick(index),
-  };
-
-  function next() {
-    refSlick?.current?.slickNext?.();
-  }
-  function previous() {
-    refSlick?.current?.slickPrev?.();
-  }
-
-  console.log("index ", indexSlick);
-
   return (
     <div className="bg-white">
       <header className="container max-w-5xl mx-auto flex flex-row pt-12 items-center space-x-36">
@@ -166,7 +144,7 @@ function App() {
             );
           })}
         </div>
-        <div className="container max-w-5xl mx-auto grid grid-cols-2 py-24 items-center ">
+        <div className="container max-w-5xl mx-auto grid grid-cols-2 py-24  items-center ">
           <img src={Ilustration2} alt={"features-lasles-vpn"} />
           <div className="px-16 space-y-4 ">
             <div className="font-medium text-3xl">
@@ -191,17 +169,13 @@ function App() {
           </div>
         </div>
         <div className="bg-gray-50 py-24">
-          <div className=" container max-w-5xl mx-auto mb-10 ">
-            <div className="text-center text-3xl font-medium mb-5">
-              Choose Your Plan
-            </div>
-            <div className="text-center font-normal text-sm text-gray-600">
-              Let's choose the package that is best for you and explore it
+          <TitleDesc
+            title={"Choose Your Plan"}
+            desc={`Let's choose the package that is best for you and explore it
               happily and
-              <br />
-              cheerfully.
-            </div>
-          </div>
+              cheerfully.`}
+          />
+
           <div className=" container max-w-5xl mx-auto grid grid-cols-3 space-x-6">
             {plans.map((val, index) => {
               return (
@@ -215,16 +189,11 @@ function App() {
           </div>
 
           <div className="container max-w-5xl mx-auto py-24">
-            <div className=" container max-w-5xl mx-auto mb-10 ">
-              <div className="text-center text-3xl font-medium mb-5">
-                Huge Global Network of Fast VPN
-              </div>
-              <div className="text-center font-normal text-sm text-gray-600">
-                See LaslesVPN everywhere to make it easier for you when you move
-                <br />
-                locations.
-              </div>
-            </div>
+            <TitleDesc
+              title={" Huge Global Network of Fast VPN"}
+              desc={` See LaslesVPN everywhere to make it easier for you when you move locations.`}
+            />
+
             <img src={Global} alt={"Global"} className="my-20" />
             <div className="flex flex-row justify-center">
               {sosmed.map((val, index) => (
@@ -232,123 +201,57 @@ function App() {
               ))}
             </div>
           </div>
-          <Slider {...settings} arrows={false} ref={refSlick}>
-            {Array.from(Array(8)).map((val, index) => {
-              return (
-                <div className={`${index + 1 === 1 ? "ml-32" : 0}`}>
-                  <CardReview key={val} isSelect={indexSlick === index} />
-                </div>
-              );
-            })}
-          </Slider>
-          <div className="container mx-auto max-w-5xl flex flex-row justify-between mt-10">
-            <div className="flex flex-row space-x-2 flex-1">
-              {Array.from(Array(8)).map((val, index) => {
-                return (
-                  <div
-                    className={`h-3 rounded-full ${
-                      index === indexSlick
-                        ? "w-10 bg-red-500 transition-all duration-300 ease-in-out"
-                        : "w-3 bg-gray-300 transition-all duration-200 ease-in-out "
-                    }`}
-                  />
-                );
-              })}
-            </div>
-            <div className="space-x-4 flex flex-row">
-              <button
-                onClick={() => previous()}
-                className="w-12 h-12 rounded-full text-center border border-red-500 flex items-center justify-center"
-              >
-                <img src={ArrowLeft} alt="arrow-left" className="w-6 h-6 " />
-              </button>
-              <button
-                onClick={() => next()}
-                className="w-12 h-12 rounded-full bg-red-500  flex items-center justify-center"
-              >
-                <img src={ArrowRight} alt="arrow-right" className="w-6 h-6" />
-              </button>
-            </div>
-          </div>
+
+          <Review />
+        </div>
+        <div className="bg-gray-100">
+          <SubscribeNow />
         </div>
       </main>
-    </div>
-  );
-}
-
-function CardReview({ isSelect }) {
-  return (
-    <div
-      className={`p-7 border ${
-        isSelect ? " border-red-500" : "border-gray-300"
-      } mr-7 w-96 rounded-lg`}
-    >
-      <div className="flex flex-row justify-between items-center">
-        <div className="flex flex-row space-x-5">
-          <img
-            src="https://images.pexels.com/photos/8573621/pexels-photo-8573621.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt="profile"
-            className="w-12 h-12 rounded-full"
-          />
+      <footer className="bg-gray-100 py-20">
+        <div className="container mx-auto max-w-5xl flex flex-row  space-x-24">
+          <div className="flex-1 space-y-5">
+            <img src={IconLaslesVpn} alt="logo lasles vpn" className="w-36" />
+            <div>
+              LaslesVPN is a private virtual network that <br />
+              has unique features and has high security.
+            </div>
+            <div className="flex flex-row">
+              <img src={Facebook} alt="facebook icon" className="w-16 h-16" />
+              <img src={Twitter} alt="twitter icon" className="w-16 h-16" />
+              <img src={Instagram} alt="IG icon" className="w-16 h-16" />
+            </div>
+            <div>©2020LaslesVPN</div>
+          </div>
+          <div className="">
+            <div className="text-lg font-semibold mb-6">Product</div>
+            <ul className="space-y-6 text-sm text-gray-500">
+              <li>Pricing</li>
+              <li>Locations</li>
+              <li>Server</li>
+              <li>Countries</li>
+              <li>Blog</li>
+            </ul>
+          </div>
           <div>
-            <div>Hari Irawan</div>
-            <div>Warsaw, Poland</div>
+            <div className="text-lg font-semibold mb-6">Engage</div>
+            <ul className="space-y-6  text-sm text-gray-500">
+              <li>LaslesVPN ? </li>
+              <li>FAQ</li>
+              <li>Tutorials</li>
+              <li>Privacy Policy</li>
+              <li>Terms of Service</li>
+            </ul>
+          </div>
+          <div>
+            <div className="text-lg font-semibold mb-6">Earn Money</div>
+            <ul className="space-y-6  text-sm text-gray-500">
+              <li>Affiliate</li>
+              <li>Become Partner</li>
+            </ul>
           </div>
         </div>
-        <div className="flex flex-row items-center space-x-2">
-          <div>4.5</div>
-          <img src={StartIcon} alt="start" className="w-3 h-3" />
-        </div>
-      </div>
-      <div className="mt-5">
-        “Wow... I am very happy to use this VPN, it turned out to be more than
-        my expectations and so far there have been no problems. LaslesVPN always
-        the best”.
-      </div>
-    </div>
-  );
-}
-
-function CardPlan({ title, price, features, isSelect }) {
-  return (
-    <div
-      className={`bg-white rounded-md flex flex-col justify-between items-center  pt-16 pb-8 border ${
-        isSelect ? "border-red-500" : "border-gray-300"
-      }`}
-    >
-      <div className="space-y-5 flex flex-col justify-center items-center">
-        <img src={IconFree} alt="" className="w-24 h-24" />
-        <h3>{title}</h3>
-        <div className="space-y-2">
-          {features.map((val, index) => {
-            return (
-              <div
-                key={index}
-                className="flex flex-row mr-2 items-center space-x-2 "
-              >
-                <img
-                  src={CheckSucces}
-                  alt="check-success"
-                  className="w-3 h-2"
-                />
-                <div>
-                  {val} <div />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="mt-8">
-        <div className="text-center mb-3">{price}</div>
-        <button
-          className={`border rounded-full py-1 px-10 border-red-500  ${
-            isSelect ? "bg-red-500 text-white" : "bg-white text-red-500"
-          }`}
-        >
-          Select
-        </button>
-      </div>
+      </footer>
     </div>
   );
 }

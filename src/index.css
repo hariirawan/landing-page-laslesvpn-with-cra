@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.move { 
-  transition: all 300ms ease;
+.slick-slide{
+  margin: 0 10px;
 }
